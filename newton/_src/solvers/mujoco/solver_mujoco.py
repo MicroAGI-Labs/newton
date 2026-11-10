@@ -5526,6 +5526,7 @@ class SolverMuJoCo(SolverBase, CouplingInterface):
                 mj_contact.dim,
                 mj_contact.geom,
                 mj_contact.efc_address,
+                mj_contact.adhesion,
                 mj_contact.worldid,
                 mj_data.efc.force,
                 self.mjw_model.geom_bodyid,
@@ -8107,8 +8108,6 @@ class SolverMuJoCo(SolverBase, CouplingInterface):
                 array = getattr(mj_model, field)
                 setattr(mj_model, field, tile(array))
 
-        mj_model.stat.meaninertia = tile(mj_model.stat.meaninertia)
-
         for field in mj_model.opt.__dataclass_fields__:
             if field in opt_fields_to_expand:
                 array = getattr(mj_model.opt, field)
@@ -8261,12 +8260,10 @@ class SolverMuJoCo(SolverBase, CouplingInterface):
         else:
             actuator_biasprm = wp.clone(self.mjw_model.actuator_biasprm)
             self._mujoco_warp.set_const_0(self.mjw_model, self.mjw_data)
-            physical_meaninertia = wp.clone(self.mjw_model.stat.meaninertia)
 
             self._update_body_properties()
             wp.copy(self.mjw_model.actuator_biasprm, actuator_biasprm)
             self._mujoco_warp.set_const_0(self.mjw_model, self.mjw_data)
-            wp.copy(self.mjw_model.stat.meaninertia, physical_meaninertia)
 
     def _update_body_properties(self, apply_kinematic_armature: bool = True):
         """Update body-property dependent MuJoCo DOF parameters.

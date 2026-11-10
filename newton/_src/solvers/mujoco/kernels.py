@@ -32,7 +32,7 @@ def _import_contact_force_fn():
 
 # Custom vector types
 vec10 = wp.types.vector(length=10, dtype=wp.float32)
-vec11 = wp.types.vector(length=11, dtype=wp.float32)
+vec12 = wp.types.vector(length=12, dtype=wp.float32)
 
 
 # Utility functions
@@ -1208,7 +1208,7 @@ def update_connect_constraint_anchors_kernel(
     connect_anchor2_q: wp.array[wp.quat],
     connect_anchor2_t: wp.array[wp.vec3],
     # output
-    eq_data_out: wp.array2d[vec11],
+    eq_data_out: wp.array2d[vec12],
 ):
     """Write CONNECT constraint anchors into MuJoCo ``eq_data``.
 
@@ -1236,7 +1236,7 @@ def update_connect_constraint_anchors_kernel(
             constraint, shape ``[equality_constraint_count]``,
             dtype ``wp.vec3``.
         eq_data_out: *(output)* MuJoCo equality constraint data,
-            shape ``[world_count, neq]``, dtype ``vec11``.
+            shape ``[world_count, neq]``, dtype ``vec12``.
             Slots ``[0:3]`` receive ``anchor1`` and ``[3:6]`` receive
             ``anchor2``.
     """
@@ -1395,7 +1395,7 @@ def update_jnt_connect_constraint_anchors_kernel(
     jnt_eq_q_rel: wp.array2d[wp.quat],
     jnt_eq_t_rel: wp.array2d[wp.vec3],
     # output
-    eq_data_out: wp.array2d[vec11],
+    eq_data_out: wp.array2d[vec12],
 ):
     """Write joint-synthesized CONNECT constraint anchors into MuJoCo ``eq_data``.
 
@@ -1417,7 +1417,7 @@ def update_jnt_connect_constraint_anchors_kernel(
         jnt_eq_t_rel: Relative translation [m] per ``[world, eq]``,
             shape ``[world_count, neq]``, dtype ``wp.vec3``.
         eq_data_out: *(output)* MuJoCo equality constraint data,
-            shape ``[world_count, neq]``, dtype ``vec11``.
+            shape ``[world_count, neq]``, dtype ``vec12``.
             Slots ``[0:3]`` receive ``anchor1`` and ``[3:6]`` receive
             ``anchor2``.
     """
@@ -1457,6 +1457,7 @@ def create_convert_mjw_contacts_to_newton_kernel():
         mj_contact_dim: wp.array[int],
         mj_contact_geom: wp.array[wp.vec2i],
         mj_contact_efc_address: wp.array2d[int],
+        mj_contact_adhesion: wp.array[float],
         mj_contact_worldid: wp.array[wp.int32],
         mj_efc_force: wp.array2d[float],
         mj_geom_bodyid: wp.array[int],
@@ -1525,6 +1526,7 @@ def create_convert_mjw_contacts_to_newton_kernel():
                 mj_contact_friction,
                 mj_contact_dim,
                 mj_contact_efc_address,
+                mj_contact_adhesion,
                 mj_efc_force,
                 njmax,
                 mj_nacon,
@@ -2854,7 +2856,7 @@ def update_eq_data_and_active_kernel(
     eq_constraint_torquescale: wp.array[wp.float32],
     eq_constraint_enabled: wp.array[wp.bool],
     # outputs
-    eq_data_out: wp.array2d[vec11],
+    eq_data_out: wp.array2d[vec12],
     eq_active_out: wp.array2d[wp.bool],
 ):
     """Update MuJoCo equality constraint data and active status from Newton properties.
@@ -2923,7 +2925,7 @@ def update_mimic_eq_data_and_active_kernel(
     constraint_mimic_coef1: wp.array[wp.float32],
     constraint_mimic_enabled: wp.array[wp.bool],
     # outputs
-    eq_data_out: wp.array2d[vec11],
+    eq_data_out: wp.array2d[vec12],
     eq_active_out: wp.array2d[wp.bool],
 ):
     """Update MuJoCo equality constraint data and active status from Newton mimic constraint properties.

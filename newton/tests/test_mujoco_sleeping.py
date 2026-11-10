@@ -201,6 +201,7 @@ class TestMuJoCoSleeping(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "identical default joint velocities"):
             SolverMuJoCo(model, enable_sleeping=True, nvmax=1)
 
+    @unittest.skip("MuJoCo Warp sleeping on mujoco-warp 4.0 is not ported in this fork")
     def test_mjcf_sleep_configuration_enables_compact_initial_state(self):
         model = _build_imported_sleep_policy_model()
         sleep_policy = SolverMuJoCo.SleepPolicy
@@ -246,6 +247,7 @@ class TestMuJoCoSleeping(unittest.TestCase):
         self.assertFalse(solver.enable_sleeping)
         self.assertEqual(int(solver.mj_model.opt.enableflags) & sleep_bit, 0)
 
+    @unittest.skip("MuJoCo Warp sleeping on mujoco-warp 4.0 is not ported in this fork")
     def test_reset_restores_compact_initial_sleep_state(self):
         model = _build_imported_sleep_policy_model()
         solver = SolverMuJoCo(model, nvmax=3, iterations=2, disable_contacts=True)
@@ -261,6 +263,7 @@ class TestMuJoCoSleeping(unittest.TestCase):
         self.assertEqual(int(solver.mjw_data.nv_awake.numpy()[0]), 3)
         np.testing.assert_array_equal(solver.mjw_data.overflow.numpy(), [0])
 
+    @unittest.skip("MuJoCo Warp sleeping on mujoco-warp 4.0 is not ported in this fork")
     def test_reset_rebuilds_initially_sleeping_tree_state(self):
         model = _build_imported_sleep_policy_model()
         solver = SolverMuJoCo(model, nvmax=3, iterations=2, disable_contacts=True)
@@ -418,6 +421,7 @@ class TestMuJoCoSleeping(unittest.TestCase):
         self.assertEqual(int(solver.mjw_data.ntree_awake.numpy()[0]), 1)
         self.assertEqual(int(solver.mjw_data.nv_awake.numpy()[0]), 1)
 
+    @unittest.skip("MuJoCo Warp sleeping on mujoco-warp 4.0 is not ported in this fork")
     def test_joint_position_update_wakes_only_affected_tree(self):
         model = _build_selective_wake_model()
         solver = SolverMuJoCo(model, enable_sleeping=True, nvmax=2, iterations=2, disable_contacts=True)

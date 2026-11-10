@@ -1,3 +1,10 @@
+> **MicroAGI-Labs fork: Newton 1.6.1 on MuJoCo 4.0 (`1.6.1+mujoco4`).**
+> This branch is Newton 1.6.1 with the changes needed to run `SolverMuJoCo` on `mujoco==4.0.0` and
+> `mujoco-warp==4.0.0`, for the micro-harness Newton plant. It passes the contact adhesion array to
+> `contact_force_fn`, widens `eq_data` to 12 floats, and stops reading `Model.stat` from mujoco-warp.
+> Not ported: MuJoCo Warp sleeping and runtime `dampratio` resolution on the mujoco-warp path. Their tests are
+> skipped with the reason. Use upstream Newton for anything else.
+
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/newton-physics/newton/main)
 [![codecov](https://codecov.io/gh/newton-physics/newton/graph/badge.svg?token=V6ZXNPAWVG)](https://codecov.io/gh/newton-physics/newton)
